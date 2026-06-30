@@ -1,0 +1,1279 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>POLO Launcher</title>
+
+
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Pretendard:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+<style>
+    /* ===========================
+   Reset
+=========================== */
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+html{
+    scroll-behavior:smooth;
+}
+
+body{
+
+    font-family:"Pretendard",sans-serif;
+    background:#f7f8fc;
+    color:#222;
+    overflow-x:hidden;
+    line-height:1.6;
+
+}
+
+/* ===========================
+   Background
+=========================== */
+
+body::before{
+
+    content:"";
+    position:fixed;
+    width:700px;
+    height:700px;
+
+    background:radial-gradient(circle,#7c8cff33 0%,transparent 70%);
+
+    top:-200px;
+    left:-150px;
+
+    z-index:-2;
+
+    animation:blob 10s infinite alternate;
+
+}
+
+body::after{
+
+    content:"";
+
+    position:fixed;
+
+    width:600px;
+
+    height:600px;
+
+    background:radial-gradient(circle,#00c2ff22 0%,transparent 70%);
+
+    bottom:-200px;
+
+    right:-150px;
+
+    z-index:-2;
+
+    animation:blob2 13s infinite alternate;
+
+}
+
+@keyframes blob{
+
+    to{
+
+        transform:translate(80px,80px) scale(1.2);
+
+    }
+
+}
+
+@keyframes blob2{
+
+    to{
+
+        transform:translate(-120px,-80px) scale(1.3);
+
+    }
+
+}
+
+/* ===========================
+ Navigation
+=========================== */
+
+nav{
+
+    position:fixed;
+
+    top:0;
+
+    left:0;
+
+    width:100%;
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    padding:20px 10%;
+
+    background:rgba(255,255,255,.8);
+
+    backdrop-filter:blur(10px);
+
+    z-index:999;
+
+    transition:.3s;
+
+}
+
+nav.scrolled{
+
+    box-shadow:0 10px 30px rgba(0,0,0,.08);
+
+}
+
+.logo{
+
+    font-size:25px;
+
+    font-weight:700;
+
+    color:#4f63ff;
+
+}
+
+.logo i{
+
+    margin-right:8px;
+
+}
+
+nav ul{
+
+    display:flex;
+
+    list-style:none;
+
+    gap:35px;
+
+}
+
+nav a{
+
+    text-decoration:none;
+
+    color:#444;
+
+    font-weight:600;
+
+    transition:.3s;
+
+}
+
+nav a:hover{
+
+    color:#4f63ff;
+
+}
+
+/* ===========================
+ Hero
+=========================== */
+
+.hero{
+
+    min-height:100vh;
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    padding:120px 10%;
+
+}
+
+.hero-text{
+
+    width:50%;
+
+}
+
+.badge{
+
+    background:#eef2ff;
+
+    color:#4f63ff;
+
+    padding:8px 15px;
+
+    border-radius:30px;
+
+    font-size:13px;
+
+    font-weight:700;
+
+}
+
+.hero h1{
+
+    margin-top:20px;
+
+    font-size:60px;
+
+    line-height:1.2;
+
+}
+
+.hero h1 span{
+
+    color:#4f63ff;
+
+}
+
+.hero p{
+
+    margin-top:30px;
+
+    color:#666;
+
+    font-size:18px;
+
+    max-width:500px;
+
+}
+
+.hero-buttons{
+
+    display:flex;
+
+    gap:15px;
+
+    margin-top:40px;
+
+}
+
+.btn{
+
+    display:inline-flex;
+
+    align-items:center;
+
+    gap:10px;
+
+    padding:16px 30px;
+
+    border-radius:12px;
+
+    border:2px solid #4f63ff;
+
+    text-decoration:none;
+
+    color:#4f63ff;
+
+    font-weight:700;
+
+    transition:.3s;
+
+}
+
+.primary{
+
+    background:#4f63ff;
+
+    color:white;
+
+}
+
+.btn:hover{
+
+    transform:translateY(-5px);
+
+    box-shadow:0 15px 35px rgba(79,99,255,.25);
+
+}
+
+/* ===========================
+ Rocket
+=========================== */
+
+.hero-image{
+
+    width:40%;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    position:relative;
+
+}
+
+.circle{
+
+    width:350px;
+
+    height:350px;
+
+    border-radius:50%;
+
+    background:linear-gradient(135deg,#dbe3ff,#eef2ff);
+
+}
+
+.rocket{
+
+    position:absolute;
+
+    font-size:130px;
+
+    color:#4f63ff;
+
+    animation:float 3s ease-in-out infinite;
+
+}
+
+@keyframes float{
+
+    50%{
+
+        transform:translateY(-20px);
+
+    }
+
+}
+
+/* ===========================
+ Section
+=========================== */
+
+.section{
+
+    padding:120px 10%;
+
+}
+
+.section-title{
+
+    text-align:center;
+
+}
+
+.section-title i{
+
+    font-size:50px;
+
+    color:#4f63ff;
+
+}
+
+.section-title h2{
+
+    margin-top:20px;
+
+    font-size:42px;
+
+}
+
+.section-title p{
+
+    color:#777;
+
+}
+
+/* ===========================
+ Graph
+=========================== */
+
+.graph{
+
+    margin-top:70px;
+
+    display:flex;
+
+    justify-content:center;
+
+    gap:120px;
+
+    align-items:flex-end;
+
+}
+
+.item{
+
+    text-align:center;
+
+}
+
+.bar{
+
+    width:80px;
+
+    margin:25px auto;
+
+    border-radius:15px 15px 0 0;
+
+    background:#4f63ff;
+
+    height:0;
+
+    transition:1.5s;
+
+}
+
+.windows{
+
+    --height:180px;
+
+}
+
+.polo{
+
+    --height:70px;
+
+}
+
+.normal{
+
+    --height:120px;
+
+}
+
+.high{
+
+    --height:210px;
+
+}
+
+/* ===========================
+ Users
+=========================== */
+
+.users{
+
+    text-align:center;
+
+    padding:120px 0;
+
+}
+
+.users i{
+
+    font-size:55px;
+
+    color:#4f63ff;
+
+}
+
+.users h2{
+
+    margin:20px 0;
+
+    font-size:42px;
+
+}
+
+#counter{
+
+    font-size:70px;
+
+    font-weight:800;
+
+    color:#4f63ff;
+
+}
+
+/* ===========================
+ Features
+=========================== */
+
+.features{
+
+    display:grid;
+
+    grid-template-columns:repeat(3,1fr);
+
+    gap:30px;
+
+    padding:100px 10%;
+
+}
+
+.card{
+
+    background:white;
+
+    border-radius:20px;
+
+    padding:45px;
+
+    text-align:center;
+
+    transition:.35s;
+
+    box-shadow:0 15px 30px rgba(0,0,0,.05);
+
+}
+
+.card:hover{
+
+    transform:translateY(-10px);
+
+    box-shadow:0 25px 40px rgba(0,0,0,.12);
+
+}
+
+.card i{
+
+    font-size:50px;
+
+    color:#4f63ff;
+
+}
+
+.card h3{
+
+    margin:20px 0;
+
+}
+
+/* ===========================
+ Download
+=========================== */
+
+.download{
+
+    padding:140px 0;
+
+    text-align:center;
+
+}
+
+.download h2{
+
+    font-size:50px;
+
+}
+
+.download p{
+
+    margin:20px;
+
+    color:#666;
+
+}
+
+#downloadBtn{
+
+    margin-top:30px;
+
+    border:none;
+
+    cursor:pointer;
+
+    background:#4f63ff;
+
+    color:white;
+
+    font-size:22px;
+
+    padding:20px 45px;
+
+    border-radius:14px;
+
+    transition:.3s;
+
+}
+
+#downloadBtn:hover{
+
+    transform:translateY(-6px);
+
+    box-shadow:0 20px 40px rgba(79,99,255,.35);
+
+}
+
+/* ===========================
+ Footer
+=========================== */
+
+footer{
+
+    padding:50px;
+
+    text-align:center;
+
+    color:#888;
+
+}
+
+/* ===========================
+ Scroll Animation
+=========================== */
+
+.reveal{
+
+    opacity:0;
+
+    transform:translateY(80px);
+
+    transition:1s;
+
+}
+
+.reveal.active{
+
+    opacity:1;
+
+    transform:none;
+
+}
+
+/* ===========================
+ Mobile
+=========================== */
+
+@media(max-width:900px){
+
+nav{
+
+padding:20px;
+
+}
+
+nav ul{
+
+display:none;
+
+}
+
+.hero{
+
+flex-direction:column;
+
+text-align:center;
+
+padding-top:160px;
+
+}
+
+.hero-text{
+
+width:100%;
+
+}
+
+.hero-image{
+
+margin-top:60px;
+
+width:100%;
+
+}
+
+.hero h1{
+
+font-size:45px;
+
+}
+
+.graph{
+
+gap:60px;
+
+}
+
+.features{
+
+grid-template-columns:1fr;
+
+}
+
+}
+</style>
+</head>
+
+<body>
+
+<!-- ======================= -->
+<!-- Navigation -->
+<!-- ======================= -->
+
+<nav>
+
+    <div class="logo">
+        <i class="fa-solid fa-rocket"></i>
+        POLO
+    </div>
+
+    <ul>
+
+        <li><a href="#speed">속도</a></li>
+        <li><a href="#apps">앱</a></li>
+        <li><a href="#users">사용자</a></li>
+        <li><a href="#download">다운로드</a></li>
+
+    </ul>
+
+</nav>
+
+<!-- ======================= -->
+<!-- Hero -->
+<!-- ======================= -->
+
+<header class="hero">
+
+    <div class="hero-text reveal">
+
+        <span class="badge">
+            NEW
+        </span>
+
+        <h1>
+
+            심플한 국산 런처
+
+            <br>
+
+            <span>POLO Launcher</span>
+
+        </h1>
+
+        <p>
+
+            가볍고 빠른 Windows 런처.
+
+            불필요한 기능은 제거하고
+
+            실행 속도에 집중했습니다.
+
+        </p>
+
+        <div class="hero-buttons">
+
+            <a href="#download" class="btn primary">
+
+                <i class="fa-brands fa-windows"></i>
+
+                다운로드
+
+            </a>
+
+            <a href="#speed" class="btn">
+
+                자세히 보기
+
+            </a>
+
+        </div>
+
+    </div>
+
+    <div class="hero-image reveal">
+
+        <div class="circle"></div>
+
+        <i class="fa-solid fa-rocket rocket"></i>
+
+    </div>
+
+</header>
+
+<!-- ======================= -->
+<!-- Speed -->
+<!-- ======================= -->
+
+<section id="speed" class="section reveal">
+
+    <div class="section-title">
+
+        <i class="fa-solid fa-bolt"></i>
+
+        <h2>빠른 속도</h2>
+
+        <p>
+
+            기존 런처보다 더 빠른 실행
+
+        </p>
+
+    </div>
+
+    <div class="graph">
+
+        <div class="item">
+
+            <h3>2.52초</h3>
+
+            <div class="bar windows"></div>
+
+            <span>기존 런처</span>
+
+        </div>
+
+        <div class="item">
+
+            <h3>0.84초</h3>
+
+            <div class="bar polo"></div>
+
+            <span>POLO</span>
+
+        </div>
+
+    </div>
+
+</section>
+
+<!-- ======================= -->
+<!-- Apps -->
+<!-- ======================= -->
+
+<section id="apps" class="section reveal">
+
+    <div class="section-title">
+
+        <i class="fa-solid fa-layer-group"></i>
+
+        <h2>많은 앱 지원</h2>
+
+        <p>
+
+            다양한 앱을 실행할 수 있습니다.
+
+        </p>
+
+    </div>
+
+    <div class="graph">
+
+        <div class="item">
+
+            <h3>8개</h3>
+
+            <div class="bar normal"></div>
+
+            <span>L사 OS</span>
+
+        </div>
+
+        <div class="item">
+
+            <h3>13개</h3>
+
+            <div class="bar high"></div>
+
+            <span>POLO</span>
+
+        </div>
+
+    </div>
+
+</section>
+
+<!-- ======================= -->
+<!-- User Count -->
+<!-- ======================= -->
+
+<section id="users" class="users reveal">
+
+    <i class="fa-solid fa-users"></i>
+
+    <h2>
+
+        실시간 사용자
+
+    </h2>
+
+    <div id="counter">
+
+        0
+
+    </div>
+
+    <p>
+
+        지금도 계속 증가하고 있습니다.
+
+    </p>
+
+</section>
+
+<!-- ======================= -->
+<!-- Features -->
+<!-- ======================= -->
+
+<section class="features">
+
+<div class="card reveal">
+
+<i class="fa-solid fa-feather"></i>
+
+<h3>가벼움</h3>
+
+<p>
+
+낮은 메모리 사용량
+
+</p>
+
+</div>
+
+<div class="card reveal">
+
+<i class="fa-solid fa-gauge-high"></i>
+
+<h3>빠른 실행</h3>
+
+<p>
+
+0.84초 실행
+
+</p>
+
+</div>
+
+<div class="card reveal">
+
+<i class="fa-solid fa-shield-halved"></i>
+
+<h3>안정성</h3>
+
+<p>
+
+안정적인 업데이트
+
+</p>
+
+</div>
+
+</section>
+
+<!-- ======================= -->
+<!-- Download -->
+<!-- ======================= -->
+
+<section id="download" class="download reveal">
+
+<h2>
+
+지금 바로 시작하세요.
+
+</h2>
+
+<p>
+
+무료로 사용할 수 있습니다.
+
+</p>
+
+<button id="downloadBtn">
+
+<i class="fa-brands fa-windows"></i>
+
+Windows 다운로드
+
+</button>
+
+</section>
+
+<!-- ======================= -->
+<!-- Footer -->
+<!-- ======================= -->
+
+<footer>
+
+<h3>
+
+POLO Launcher
+
+</h3>
+
+<p>
+
+© 2025 POLO Launcher
+
+</p>
+
+</footer>
+
+<script>
+    /* ============================
+   Scroll Reveal
+============================ */
+
+const reveals = document.querySelectorAll(".reveal");
+
+function revealSection() {
+
+    const trigger = window.innerHeight * 0.85;
+
+    reveals.forEach(section => {
+
+        const top = section.getBoundingClientRect().top;
+
+        if (top < trigger) {
+            section.classList.add("active");
+        }
+
+    });
+
+}
+
+window.addEventListener("scroll", revealSection);
+window.addEventListener("load", revealSection);
+
+
+/* ============================
+   Sticky Navigation
+============================ */
+
+const nav = document.querySelector("nav");
+
+window.addEventListener("scroll", () => {
+
+    if (window.scrollY > 20) {
+
+        nav.classList.add("scrolled");
+
+    } else {
+
+        nav.classList.remove("scrolled");
+
+    }
+
+});
+
+
+/* ============================
+   Graph Animation
+============================ */
+
+const graphBars = document.querySelectorAll(".bar");
+
+let graphPlayed = false;
+
+function animateGraph() {
+
+    const graph = document.querySelector(".graph");
+
+    if (!graph) return;
+
+    const top = graph.getBoundingClientRect().top;
+
+    if (top < window.innerHeight * 0.8 && !graphPlayed) {
+
+        graphBars.forEach(bar => {
+
+            const h = bar.style.getPropertyValue("--height") ||
+                      getComputedStyle(bar).getPropertyValue("--height");
+
+            bar.style.height = h;
+
+        });
+
+        graphPlayed = true;
+
+    }
+
+}
+
+window.addEventListener("scroll", animateGraph);
+window.addEventListener("load", animateGraph);
+
+
+/* ============================
+   Count Up
+============================ */
+
+const counter = document.getElementById("counter");
+
+let started = false;
+
+function countAnimation() {
+
+    if (!counter) return;
+
+    const top = counter.getBoundingClientRect().top;
+
+    if (top < window.innerHeight * 0.85 && !started) {
+
+        started = true;
+
+        let value = 0;
+
+        const target = 6767;
+
+        const speed = 20;
+
+        const timer = setInterval(() => {
+
+            value += Math.ceil((target - value) / 15);
+
+            if (value >= target) {
+
+                value = target;
+
+                clearInterval(timer);
+
+            }
+
+            counter.innerHTML = value.toLocaleString() + "명";
+
+        }, speed);
+
+    }
+
+}
+
+window.addEventListener("scroll", countAnimation);
+window.addEventListener("load", countAnimation);
+
+
+/* ============================
+   Download Ripple Effect
+============================ */
+
+const downloadBtn = document.getElementById("downloadBtn");
+
+downloadBtn.addEventListener("click", function(e){
+
+    const ripple = document.createElement("span");
+
+    const rect = this.getBoundingClientRect();
+
+    const size = Math.max(rect.width, rect.height);
+
+    ripple.style.width = size + "px";
+    ripple.style.height = size + "px";
+
+    ripple.style.left =
+        e.clientX - rect.left - size / 2 + "px";
+
+    ripple.style.top =
+        e.clientY - rect.top - size / 2 + "px";
+
+    ripple.classList.add("ripple");
+
+    this.appendChild(ripple);
+
+    setTimeout(()=>{
+
+        ripple.remove();
+
+    },700);
+
+});
+
+
+/* ============================
+   Hero Rocket Parallax
+============================ */
+
+const rocket = document.querySelector(".rocket");
+
+document.addEventListener("mousemove",(e)=>{
+
+    if(!rocket) return;
+
+    const x = (e.clientX/window.innerWidth-.5)*25;
+
+    const y = (e.clientY/window.innerHeight-.5)*25;
+
+    rocket.style.transform =
+    `translate(${x}px,${y}px)`;
+
+});
+
+
+/* ============================
+   Active Menu
+============================ */
+
+const sections = document.querySelectorAll("section");
+
+const navLinks = document.querySelectorAll("nav a");
+
+window.addEventListener("scroll",()=>{
+
+    let current = "";
+
+    sections.forEach(section=>{
+
+        const top = section.offsetTop - 150;
+
+        if(window.scrollY >= top){
+
+            current = section.getAttribute("id");
+
+        }
+
+    });
+
+    navLinks.forEach(link=>{
+
+        link.classList.remove("active");
+
+        if(link.getAttribute("href")==="#" + current){
+
+            link.classList.add("active");
+
+        }
+
+    });
+
+});
+
+
+/* ============================
+   Smooth Button Animation
+============================ */
+
+document.querySelectorAll(".btn").forEach(btn=>{
+
+    btn.addEventListener("mouseenter",()=>{
+
+        btn.style.transform="translateY(-5px) scale(1.03)";
+
+    });
+
+    btn.addEventListener("mouseleave",()=>{
+
+        btn.style.transform="";
+
+    });
+
+});
+
+
+/* ============================
+   Download Button Demo
+============================ */
+
+downloadBtn.addEventListener("click",()=>{
+
+    setTimeout(()=>{
+
+        alert("POLO Launcher 다운로드를 시작합니다.");
+
+    },250);
+
+});
+</script>
+
+</body>
+
+</html>
