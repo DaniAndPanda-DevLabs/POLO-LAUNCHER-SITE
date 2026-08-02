@@ -315,6 +315,8 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
+            padding-top: 15px;
+            border-top: 1px solid #f0f0f0;
         }
 
         .plugin-badge {
@@ -324,6 +326,26 @@
             background: #e8fcf1;
             padding: 4px 10px;
             border-radius: 12px;
+        }
+
+        .btn-plugin-download {
+            background: #4f63ff;
+            color: white;
+            border: none;
+            padding: 8px 14px;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: .2s;
+        }
+
+        .btn-plugin-download:hover {
+            background: #394bde;
         }
 
         /* ===========================
@@ -390,6 +412,11 @@
             font-size: 14px;
             outline: none;
             font-family: inherit;
+        }
+
+        .form-group input[type="file"] {
+            padding: 8px;
+            background: #fafafa;
         }
 
         .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
@@ -651,8 +678,8 @@
                     </select>
                 </div>
                 <div class="form-group">
-                    <label>파일명 (.plpi)</label>
-                    <input type="text" id="pFilename" placeholder="예: clock.plpi" required>
+                    <label>플러그인 파일 (.plpi)</label>
+                    <input type="file" id="pFile" accept=".plpi" required>
                 </div>
                 <div class="form-group">
                     <label>설명 (선택)</label>
@@ -660,7 +687,7 @@
                 </div>
                 <div class="modal-buttons">
                     <button type="button" class="btn-cancel" onclick="closeModal()">취소</button>
-                    <button type="submit" class="btn-submit">등록하기</button>
+                    <button type="submit" class="btn-submit" id="submitBtn">등록하기</button>
                 </div>
             </form>
         </div>
@@ -674,7 +701,7 @@
 
     <script>
         /* ============================
-           Supabase 초기 설정 (자신의 정보로 입력 필요)
+           Supabase 초기 설정
         ============================ */
         const SUPABASE_URL = 'https://fliixpwhvlrrxqpocwzr.supabase.co';
         const SUPABASE_ANON_KEY = 'sb_publishable_AurjbDEhdXAHwvdjkEIh6g_ov63Up1V';
@@ -718,7 +745,7 @@
         }
 
         /* ============================
-           Supabase 기반 플러그인 관리
+           Supabase 기반 플러그인 목록 조회
         ============================ */
         async function loadPlugins() {
             const container = document.getElementById("pluginContainer");
@@ -736,6 +763,12 @@
                     plugins.forEach(plugin => {
                         const card = document.createElement("div");
                         card.className = "plugin-card reveal active";
+                        
+                        // 다운로드 버튼 액션 설정
+                        const downloadAction = plugin.file_url 
+                            ? `<a href="${plugin.file_url}" download class="btn-plugin-download"><i class="fa-solid fa-download"></i> 다운로드</a>`
+                            : `<span style="font-size:12px; color:#aaa;">파일 없음</span>`;
+
                         card.innerHTML = `
                             <div>
                                 <div class="plugin-header">
@@ -750,8 +783,11 @@
                                 </div>
                             </div>
                             <div class="plugin-footer">
-                                <span class="plugin-badge">${plugin.type.toUpperCase()}</span>
-                                <small style="color:#aaa;">${plugin.filename}</small>
+                                <div>
+                                    <span class="plugin-badge">${(plugin.type || 'PLUGIN').toUpperCase()}</span>
+                                    <div style="font-size:11px; color:#aaa; margin-top:4px;">${plugin.filename || ''}</div>
+                                </div>
+                                ${downloadAction}
                             </div>
                         `;
                         container.appendChild(card);
@@ -766,7 +802,7 @@
         }
 
         /* ============================
-           모달 컨트롤 및 등록 처리
+           모달 컨트롤 및 플러그인/파일 업로드 처리
         ============================ */
         function openModal() {
             document.getElementById("pluginModal").classList.add("active");
@@ -780,24 +816,64 @@
         document.getElementById("pluginForm").addEventListener("submit", async function(e) {
             e.preventDefault();
             
-            const newPlugin = {
-                name: document.getElementById("pName").value.trim(),
-                version: document.getElementById("pVersion").value.trim(),
-                type: document.getElementById("pType").value,
-                filename: document.getElementById("pFilename").value.trim(),
-                description: document.getElementById("pDesc").value.trim()
-            };
+            const submitBtn = document.getElementById("submitBtn");
+            const fileInput = document.getElementById("pFile");
+            const file = fileInput.files[0];
+
+            if (!file) {
+                alert("업로드할 .plpi 파일을 선택해주세요.");
+                return;
+            }
+
+            // 파일 확장자 검증
+            if (!file.name.endsWith('.plpi')) {
+                alert(".plpi 확장자를 가진 파일만 업로드할 수 있습니다.");
+                return;
+            }
+
+            submitBtn.disabled = true;
+            submitBtn.innerText = "업로드 중...";
 
             try {
-                const { error } = await db.from('plugins').insert([newPlugin]);
-                if (error) throw error;
+                // 1. Supabase Storage에 파일 업로드 (중복 방지를 위해 타임스탬프 추가)
+                const fileExt = file.name.split('.').pop();
+                const filePath = `${Date.now()}_${file.name}`;
 
+                const { data: uploadData, error: uploadError } = await db.storage
+                    .from('plugins')
+                    .upload(filePath, file);
+
+                if (uploadError) throw uploadError;
+
+                // 2. 업로드된 파일의 Public URL 가져오기
+                const { data: publicUrlData } = db.storage
+                    .from('plugins')
+                    .getPublicUrl(filePath);
+
+                const publicUrl = publicUrlData.publicUrl;
+
+                // 3. Supabase DB에 메타데이터 및 파일 URL 저장
+                const newPlugin = {
+                    name: document.getElementById("pName").value.trim(),
+                    version: document.getElementById("pVersion").value.trim(),
+                    type: document.getElementById("pType").value,
+                    filename: file.name,
+                    file_url: publicUrl,
+                    description: document.getElementById("pDesc").value.trim()
+                };
+
+                const { error: dbError } = await db.from('plugins').insert([newPlugin]);
+                if (dbError) throw dbError;
+
+                alert("플러그인 및 파일이 성공적으로 업로드되었습니다!");
                 closeModal();
                 await loadPlugins();
-                alert("Supabase DB에 플러그인이 성공적으로 등록되었습니다!");
             } catch (err) {
-                console.error("등록 오류:", err);
-                alert("등록 중 오류가 발생했습니다.");
+                console.error("업로드/등록 오류:", err);
+                alert("플러그인 업로드 중 오류가 발생했습니다: " + (err.message || err.error_description || "스토리지 설정을 확인해 주세요."));
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.innerText = "등록하기";
             }
         });
 
@@ -866,7 +942,7 @@
         window.addEventListener("load", animateGraph);
 
         /* ============================
-           Count Up Animation (Supabase 비동기 카운트 연동)
+           Count Up Animation
         ============================ */
         const counter = document.getElementById("counter");
         let started = false;
